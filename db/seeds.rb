@@ -10,9 +10,9 @@
 Ticket.destroy_all
 
 tickets = [
-  { title: "Payment outage", description: "Stripe callback failing", status: "open", priority: "high", reporter: "Support Bot", assignee: "Devon" },
-  { title: "UI typo", description: "Dashboard shows 'Suport'", status: "in_progress", priority: "low", reporter: "QA", assignee: "Avery" },
-  { title: "Add 2FA", description: "Security requested TOTP support", status: "resolved", priority: "medium", reporter: "Product", assignee: "Sam" }
+  { title: "Payment outage", description: "Stripe callback failing", status: "Open", priority: "high", reporter: "Support Bot", assignee: "Steph" },
+  { title: "UI typo", description: "Dashboard shows 'Suport'", status: "WIP", priority: "low", reporter: "QA", assignee: "Trent" },
+  { title: "Add 2FA", description: "Security requested TOTP support", status: "Resolved", priority: "medium", reporter: "Product team", assignee: "Ruby" }
 ]
 
 tickets.each { |attrs| Ticket.create!(attrs) }
