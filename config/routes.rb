@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: { sessions: "users/sessions" }
+  post "users/guest_sign_in", to: "users/sessions#guest", as: :users_guest_sign_in
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "tickets#index"
-  resources :tickets
+  resources :tickets do
+    patch :update_status, on: :member
+  end
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
