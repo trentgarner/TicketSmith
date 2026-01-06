@@ -1,0 +1,46 @@
+<% tickets_by_status = @tickets.group_by(&:status) %>
+
+<div class="row g-3" data-controller="board"
+     data-refresh-url="<%= tickets_path(view: "board", limit: params[:limit], filters: ticket_filters) %>">
+  <% Ticket::STATUSES.each do |status| %>
+    <div class="col-12 col-lg-4">
+      <div class="card h-100 board-column" data-board-status="<%= status %>"
+           data-action="dragover->board#allowDrop drop->board#drop">
+        <div class="card-header d-flex align-items-center justify-content-between bg-<%= status_badge_class(status) %>-subtle text-<%= status_badge_class(status) %>">
+          <span class="fw-semibold">
+            <%= status_display(status) %>
+          </span>
+          <span class="text-muted small">
+            <%= (tickets_by_status[status] || []).size %>
+          </span>
+        </div>
+        <div class="card-body d-flex flex-column gap-2 board-lane" data-board-lane>
+          <% (tickets_by_status[status] || []).each do |ticket| %>
+            <div class="card shadow-sm board-card board-card--<%= status_badge_class(status) %>" draggable="true"
+                 data-action="dragstart->board#dragStart"
+                 data-ticket-id="<%= ticket.id %>"
+                 data-update-url="<%= update_status_ticket_path(ticket) %>">
+              <div class="card-body p-2">
+                <div class="d-flex align-items-start justify-content-between gap-2">
+                  <div>
+                    <div class="fw-semibold">
+                      <%= link_to ticket.title, ticket, class: "text-decoration-none", data: { turbo_frame: "_top" } %>
+                    </div>
+                    <div class="small text-muted">
+                      <%= [ticket.reporter.presence, ticket.assignee.presence].compact.join(" • ").presence || "Unassigned" %>
+                    </div>
+                  </div>
+                  <% if ticket.priority.present? %>
+                    <span class="badge text-bg-<%= priority_badge_class(ticket.priority) %>">
+                      <%= ticket.priority %>
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

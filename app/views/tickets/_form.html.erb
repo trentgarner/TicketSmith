@@ -1,0 +1,49 @@
+<%= form_with(model: ticket, class: "row g-3") do |f| %>
+  <% if ticket.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(ticket.errors.count, "error") %> blocked this ticket:</h2>
+        <ul class="mb-0">
+          <% ticket.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-6">
+    <%= f.label :title, class: "form-label" %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="col-md-3">
+    <%= f.label :status, class: "form-label" %>
+    <%= f.select :status, Ticket::STATUSES, {}, class: "form-select" %>
+  </div>
+
+  <div class="col-md-3">
+    <%= f.label :priority, class: "form-label" %>
+    <%= f.select :priority, Ticket::PRIORITIES, {}, class: "form-select" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= f.label :reporter, class: "form-label" %>
+    <%= f.text_field :reporter, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= f.label :assignee, class: "form-label" %>
+    <%= f.text_field :assignee, class: "form-control" %>
+  </div>
+
+  <div class="col-12">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, class: "form-control", rows: 6 %>
+  </div>
+
+  <div class="col-12 d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", tickets_path(view: tickets_view), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

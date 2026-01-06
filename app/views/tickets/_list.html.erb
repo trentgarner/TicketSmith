@@ -1,0 +1,71 @@
+<table class="table table-striped align-middle" data-controller="highlight">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Reporter</th>
+      <th>Assignee</th>
+      <th class="text-end">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tickets.each do |ticket| %>
+      <% row_classes = ["ticket-row"] %>
+      <% row_classes << status_flash_class(ticket.status) if highlight_id.to_i == ticket.id %>
+      <tr class="<%= row_classes.join(" ") %>" data-controller="status-menu"
+          data-highlight-target="row"
+          data-ticket-id="<%= ticket.id %>"
+          data-highlight="<%= highlight_id.to_i == ticket.id %>"
+          data-flash-class="<%= status_flash_class(ticket.status) %>">
+        <td class="fw-semibold">
+          <%= link_to ticket.title, ticket, data: { turbo_frame: "_top" } %>
+        </td>
+        <td>
+          <%= form_with model: ticket, url: update_status_ticket_path(ticket), method: :patch,
+                class: "d-inline" do |f| %>
+            <%= hidden_field_tag :page, params[:page] %>
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-sm text-bg-<%= status_badge_class(ticket.status) %> dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <%= status_display(ticket.status) %>
+              </button>
+              <ul class="dropdown-menu">
+                <% Ticket::STATUSES.each do |status| %>
+                  <li>
+                    <%= f.button status_display(status),
+                          name: "ticket[status]",
+                          value: status,
+                          class: "dropdown-item",
+                          data: { action: "click->status-menu#select" } %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </td>
+        <td>
+          <% if ticket.priority.present? %>
+            <span class="badge text-bg-<%= priority_badge_class(ticket.priority) %>">
+              <%= ticket.priority %>
+            </span>
+          <% else %>
+            <span class="text-muted">--</span>
+          <% end %>
+        </td>
+        <td><%= ticket.reporter.presence || "--" %></td>
+        <td><%= ticket.assignee.presence || "--" %></td>
+        <td class="text-end">
+          <%= link_to "Show", ticket, class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "_top" } %>
+          <%= link_to "Edit", edit_ticket_path(ticket), class: "btn btn-sm btn-outline-primary", data: { turbo_frame: "_top" } %>
+          <%= link_to "Delete", ticket, class: "btn btn-sm btn-outline-danger",
+                data: { turbo_method: :delete, turbo_confirm: "Delete this ticket?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
