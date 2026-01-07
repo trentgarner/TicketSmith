@@ -13,3 +13,142 @@
  *= require_tree .
  *= require_self
  */
+
+.board-column {
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  min-height: 16rem;
+}
+
+.board-lane {
+  min-height: 14rem;
+}
+
+.board-card {
+  cursor: grab;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.board-card--success {
+  border-color: rgba(25, 135, 84, 0.35);
+  box-shadow: 0 8px 16px rgba(25, 135, 84, 0.12);
+}
+
+.board-card--warning {
+  border-color: rgba(255, 193, 7, 0.35);
+  box-shadow: 0 8px 16px rgba(255, 193, 7, 0.12);
+}
+
+.board-card--secondary {
+  border-color: rgba(108, 117, 125, 0.35);
+  box-shadow: 0 8px 16px rgba(108, 117, 125, 0.12);
+}
+
+.board-card:active {
+  cursor: grabbing;
+}
+
+.board-card--flash {
+  animation: boardCardFlash 0.22s linear 1;
+}
+
+.board-card--flash-success {
+  --flash-color-strong: rgba(25, 135, 84, 0.28);
+  --flash-color-stronger: rgba(25, 135, 84, 0.4);
+}
+
+.board-card--flash-warning {
+  --flash-color-strong: rgba(255, 193, 7, 0.28);
+  --flash-color-stronger: rgba(255, 193, 7, 0.4);
+}
+
+.board-card--flash-secondary {
+  --flash-color-strong: rgba(108, 117, 125, 0.22);
+  --flash-color-stronger: rgba(108, 117, 125, 0.32);
+}
+
+@keyframes boardCardFlash {
+  0% {
+    background-color: var(--flash-color-strong, rgba(255, 193, 7, 0.28));
+  }
+  50% {
+    background-color: var(--flash-color-stronger, rgba(255, 193, 7, 0.4));
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.view-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1rem;
+  position: relative;
+}
+
+.view-icon-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  box-shadow: 0 6px 0 currentColor, 0 12px 0 currentColor;
+}
+
+.view-icon-board {
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
+.view-icon-board::before,
+.view-icon-board::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: currentColor;
+}
+
+.view-icon-board::before {
+  left: 33%;
+}
+
+.view-icon-board::after {
+  left: 66%;
+}
+
+.ticket-row--pulse > td {
+  animation: ticketPulse 0.22s linear 1;
+}
+
+.ticket-row--pulse-success {
+  --flash-color: rgba(25, 135, 84, 0.18);
+  --flash-color-strong: rgba(25, 135, 84, 0.28);
+  --flash-color-stronger: rgba(25, 135, 84, 0.4);
+}
+
+.ticket-row--pulse-warning {
+  --flash-color: rgba(255, 193, 7, 0.18);
+  --flash-color-strong: rgba(255, 193, 7, 0.28);
+  --flash-color-stronger: rgba(255, 193, 7, 0.4);
+}
+
+.ticket-row--pulse-secondary {
+  --flash-color: rgba(108, 117, 125, 0.14);
+  --flash-color-strong: rgba(108, 117, 125, 0.22);
+  --flash-color-stronger: rgba(108, 117, 125, 0.32);
+}
+
+@keyframes ticketPulse {
+  0% {
+    background-color: var(--flash-color-strong, rgba(255, 193, 7, 0.3));
+  }
+  50% {
+    background-color: var(--flash-color-stronger, rgba(255, 193, 7, 0.5));
+  }
+  100% {
+    background-color: transparent;
+  }
+}
