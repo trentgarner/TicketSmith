@@ -1,24 +1,47 @@
-# README
+# TicketSmith
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+TicketSmith is a lightweight ticket tracker built with Ruby on Rails. It focuses on fast status updates, an engaging board view, and simple UX nudges that help teams keep work moving.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- Ticket CRUD with status and priority
+- List and board (swimlane) views with drag-and-drop
+- Quick status updates from the list view
+- Filters and "My Tickets" mode
+- WIP limit indicator and resolution streak
+- Automatic reminder flashes when WIP is too high or empty
+- Pagination for list view and "Show next" for board
+- Auth with Devise + guest login
 
-* System dependencies
+## Stack
 
-* Configuration
+- Rails 7.2
+- Turbo + Stimulus (Hotwire)
+- SQLite (dev)
+- Bootstrap 5 (CDN)
+- Devise
+- Pagy
 
-* Database creation
+## Getting Started
 
-* Database initialization
+```bash
+bundle install
+bin/rails db:setup
+bin/rails server
+```
 
-* How to run the test suite
+Visit `http://localhost:3000` and sign in or use "Continue as guest".
 
-* Services (job queues, cache servers, search engines, etc.)
+## Tests
 
-* Deployment instructions
+```bash
+bundle exec rspec
+```
 
-* ...
+## Roadmap
+
+- Per-user preferences (WIP limit, reminders)
+- Admin role + team settings
+- Ticket comments and activity log
+- Notifications (email/Slack)
+- Audit log and analytics
