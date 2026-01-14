@@ -2,7 +2,6 @@ class TicketsController < ApplicationController
   FILTER_KEYS = %w[q status priority assignee].freeze
   LIST_LIMIT = 10
   BOARD_LIMIT_DEFAULT = 10
-  WIP_LIMIT = 3
 
   before_action :authenticate_user!
   before_action :set_ticket, only: %i[show edit update destroy update_status]
@@ -91,7 +90,7 @@ class TicketsController < ApplicationController
   end
 
   def my_assignee
-    session[:my_assignee]
+    current_user.assignee_name
   end
 
   def sanitize_filters(filters)
@@ -120,7 +119,7 @@ class TicketsController < ApplicationController
   end
 
   def set_wip_status
-    @wip_limit = WIP_LIMIT
+    @wip_limit = current_user.wip_limit_value
     scope = Ticket.all
     if my_assignee.present?
       scope = scope.where("LOWER(assignee) = ?", my_assignee.downcase)
@@ -167,7 +166,6 @@ class TicketsController < ApplicationController
 
   def update_session_from_params
     session[:tickets_view] = params[:view] if %w[list board].include?(params[:view])
-    session[:my_assignee] = params[:me] if params[:me].present?
     if params[:clear].present?
       session[:ticket_filters] = {}
     elsif params[:filters].present?
@@ -202,8 +200,9 @@ class TicketsController < ApplicationController
     flash.now[:alert] = nil
     flash.now[:notice] = nil
     if @wip_count > @wip_limit
+      return unless current_user.reminders_enabled?
       flash.now[:alert] = "You are over your WIP limit. Consider closing or reassigning a ticket to stay focused."
-    elsif @wip_count.zero?
+    elsif @wip_count.zero? && current_user.reminders_enabled?
       flash.now[:notice] = "WIP is clear. Nice work keeping the board clean."
     end
   end
