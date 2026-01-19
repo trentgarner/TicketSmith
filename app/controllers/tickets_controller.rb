@@ -2,6 +2,7 @@ class TicketsController < ApplicationController
   FILTER_KEYS = %w[q status priority assignee].freeze
   LIST_LIMIT = 10
   BOARD_LIMIT_DEFAULT = 10
+  WIP_STATUSES = %w[wip in_progress].freeze
 
   before_action :authenticate_user!
   before_action :set_ticket, only: %i[show edit update destroy update_status]
@@ -120,11 +121,7 @@ class TicketsController < ApplicationController
 
   def set_wip_status
     @wip_limit = current_user.wip_limit_value
-    scope = Ticket.all
-    if my_assignee.present?
-      scope = scope.where("LOWER(assignee) = ?", my_assignee.downcase)
-    end
-    @wip_count = scope.where("LOWER(status) = ?", "wip").count
+    @wip_count = Ticket.where("LOWER(TRIM(status)) IN (?)", WIP_STATUSES).count
   end
 
   def resolution_streak_count

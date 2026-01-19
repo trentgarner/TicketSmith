@@ -9,10 +9,27 @@
 #   end
 Ticket.destroy_all
 
-tickets = [
-  { title: "Payment outage", description: "Stripe callback failing", status: "Open", priority: "high", reporter: "Support Bot", assignee: "Steph" },
-  { title: "UI typo", description: "Dashboard shows 'Suport'", status: "WIP", priority: "low", reporter: "QA", assignee: "Trent" },
-  { title: "Add 2FA", description: "Security requested TOTP support", status: "Resolved", priority: "medium", reporter: "Product team", assignee: "Ruby" }
+seed_tickets = [
+  { title: "Payment outage", description: "Stripe callback failing", status: "Open", priority: "High", reporter: "Support Bot", assignee: "Steph" },
+  { title: "UI typo", description: "Dashboard shows 'Suport'", status: "WIP", priority: "Low", reporter: "QA", assignee: "Trent" },
+  { title: "Add 2FA", description: "Security requested TOTP support", status: "Resolved", priority: "Medium", reporter: "Product team", assignee: "Ruby" }
 ]
 
-tickets.each { |attrs| Ticket.create!(attrs) }
+seed_tickets.each { |attrs| Ticket.create!(attrs) }
+
+if Rails.env.development?
+  require "faker"
+  assignees = ["Trent", "Steph", "Ruby", "Sam", "Avery", "Jordan"]
+  reporters = ["Support Bot", "QA", "Product team", "On-call", "Customer Success"]
+
+  100.times do
+    Ticket.create!(
+      title: Faker::Hacker.say_something_smart,
+      description: Faker::Lorem.paragraph(sentence_count: 4),
+      status: Ticket::STATUSES.sample,
+      priority: Ticket::PRIORITIES.sample,
+      reporter: reporters.sample,
+      assignee: assignees.sample
+    )
+  end
+end

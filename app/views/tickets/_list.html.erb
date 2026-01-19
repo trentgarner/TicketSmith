@@ -60,10 +60,12 @@
         <td><%= ticket.reporter.presence || "--" %></td>
         <td><%= ticket.assignee.presence || "--" %></td>
         <td class="text-end">
-          <%= link_to "Show", ticket, class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "_top" } %>
-          <%= link_to "Edit", edit_ticket_path(ticket), class: "btn btn-sm btn-outline-primary", data: { turbo_frame: "_top" } %>
-          <%= link_to "Delete", ticket, class: "btn btn-sm btn-outline-danger",
-                data: { turbo_method: :delete, turbo_confirm: "Delete this ticket?" } %>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Ticket actions">
+            <%= link_to "View", ticket, class: "btn btn-outline-secondary", data: { turbo_frame: "_top" } %>
+            <%= link_to "Edit", edit_ticket_path(ticket), class: "btn btn-outline-primary", data: { turbo_frame: "_top" } %>
+            <%= link_to "Del", ticket, class: "btn btn-outline-danger",
+                  data: { turbo_method: :delete, turbo_confirm: "Delete this ticket?" } %>
+          </div>
         </td>
       </tr>
     <% end %>

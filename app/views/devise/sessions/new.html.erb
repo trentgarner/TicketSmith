@@ -22,9 +22,12 @@
 
       <div class="d-grid gap-2">
         <%= f.submit "Log in", class: "btn btn-primary" %>
-        <%= button_to "Continue as guest", users_guest_sign_in_path,
-              method: :post, class: "btn btn-outline-secondary" %>
       </div>
+    <% end %>
+
+    <%= form_with url: users_guest_sign_in_path, method: :post, local: true,
+          data: { turbo: false }, class: "d-grid gap-2 mt-2" do |f| %>
+      <%= f.submit "Continue as guest", class: "btn btn-outline-secondary" %>
     <% end %>
 
     <div class="mt-3">

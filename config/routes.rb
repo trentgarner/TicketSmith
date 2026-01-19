@@ -1,8 +1,17 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
-  post "users/guest_sign_in", to: "users/sessions#guest", as: :users_guest_sign_in
+  devise_scope :user do
+    post "users/guest_sign_in", to: "users/sessions#guest", as: :users_guest_sign_in
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "tickets#index"
+  authenticated :user do
+    root "tickets#index", as: :authenticated_root
+  end
+  devise_scope :user do
+    unauthenticated do
+      root "devise/sessions#new", as: :unauthenticated_root
+    end
+  end
   resources :tickets do
     patch :update_status, on: :member
   end
