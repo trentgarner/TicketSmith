@@ -1,3 +1,10 @@
+---
+status: todo
+priority: low
+assignees:
+  - trentgarner
+---
+
 # TicketSmith
 
 TicketSmith is a lightweight ticket tracker built with Ruby on Rails. It focuses on fast status updates, an engaging board view, and simple UX nudges that help teams keep work moving.
